@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workaround Lab — Coming Soon</title>
+  <meta name="description" content="Workaround Lab is coming soon — we build mobile games and tools." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0d14;
+      --surface: #13151f;
+      --border: #1e2130;
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --green: #43e97b;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* animated gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(108,99,255,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 90% 80%, rgba(255,101,132,0.12) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* floating particle dots */
+    .particles {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.15; }
+      90%  { opacity: 0.15; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* main wrapper */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    /* logo / brand */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 24px rgba(108,99,255,0.4);
+    }
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .logo-text span { color: var(--accent); }
+
+    /* status badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(67,233,123,0.1);
+      border: 1px solid rgba(67,233,123,0.25);
+      color: var(--green);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 99px;
+      margin-bottom: 1.5rem;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* heading */
+    h1 {
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.5));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* progress bar */
+    .progress-wrap {
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 3rem;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .progress-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      transition: width 2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* feature chips */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      max-width: 560px;
+    }
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .chip:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 14px rgba(108,99,255,0.2);
+    }
+    .chip-icon { font-size: 1rem; }
+
+    /* notify form */
+    .notify-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 420px;
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+    .notify-box h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .notify-box p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .input-row input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-row input:focus { border-color: var(--accent); }
+    .input-row input::placeholder { color: var(--muted); }
+    .btn {
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      border: none;
+      border-radius: 10px;
+      padding: 0.65rem 1.25rem;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn:active { transform: scale(0.97); }
+    .thanks { display: none; color: var(--green); font-size: 0.85rem; margin-top: 0.75rem; }
+
+    /* social / footer */
+    .footer {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer a:hover { color: var(--text); }
+
+    /* mobile */
+    @media (max-width: 480px) {
+      .input-row { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- floating particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="page">
+
+    <!-- brand -->
+    <div class="logo-row">
+      <div class="logo-icon">🎮</div>
+      <div class="logo-text">Workaround<span>Lab</span></div>
+    </div>
+
+    <!-- status -->
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Work in Progress
+    </div>
+
+    <!-- headline -->
+    <h1>Something <span class="highlight">Awesome</span><br>is Loading…</h1>
+
+    <p class="subtitle">
+      We craft <strong style="color:var(--text)">mobile games</strong> and <strong style="color:var(--text)">tools</strong> built from scratch — stay tuned for our first releases.
+    </p>
+
+    <!-- progress -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Build progress</span>
+        <span id="pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="fill"></div>
+      </div>
+    </div>
+
+    <!-- feature chips -->
+    <div class="chips">
+      <div class="chip"><span class="chip-icon">🎮</span> Original Mobile Games</div>
+      <div class="chip"><span class="chip-icon">🛠️</span> Handy Tools</div>
+      <div class="chip"><span class="chip-icon">📱</span> Mobile First</div>
+      <div class="chip"><span class="chip-icon">🚀</span> Launching Soon</div>
+      <div class="chip"><span class="chip-icon">💡</span> Built In-House</div>
+      <div class="chip"><span class="chip-icon">🔔</span> Free to Try</div>
+    </div>
+
+    <!-- notify -->
+    <div class="notify-box">
+      <h3>Get notified when we launch</h3>
+      <p>Drop your email — we'll ping you when our first game or tool drops.</p>
+      <div class="input-row">
+        <input type="email" id="email" placeholder="you@email.com" />
+        <button class="btn" onclick="subscribe()">Notify me</button>
+      </div>
+      <div class="thanks" id="thanks">✅ You're on the list! Talk soon.</div>
+    </div>
+
+    <div class="footer">
+      &copy; 2026 WorkaroundLab &nbsp;·&nbsp;
+      <a href="mailto:hello@workaroundlab.com">hello@workaroundlab.com</a>
+    </div>
+
+  </div>
+
+  <script>
+    // animate progress bar to 65%
+    const target = 65;
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('fill').style.width = target + '%';
+        let n = 0;
+        const timer = setInterval(() => {
+          n++;
+          document.getElementById('pct').textContent = n + '%';
+          if (n >= target) clearInterval(timer);
+        }, 2000 / target);
+      }, 400);
+    });
+
+    // particles
+    const container = document.getElementById('particles');
+    const colors = ['#6c63ff','#ff6584','#43e97b','#fbbf24'];
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement('div');
+      el.className = 'particle';
+      const size = Math.random() * 6 + 3;
+      el.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration:${Math.random()*18+10}s;
+        animation-delay:${Math.random()*10}s;
+      `;
+      container.appendChild(el);
+    }
+
+    // fake subscribe (replace with your email service)
+    function subscribe() {
+      const email = document.getElementById('email').value.trim();
+      if (!email || !email.includes('@')) {
+        document.getElementById('email').focus();
+        return;
+      }
+      document.getElementById('thanks').style.display = 'block';
+      document.getElementById('email').value = '';
+    }
+  </script>
+</body>
+</html>
